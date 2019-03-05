@@ -26,9 +26,13 @@ function draw() {
     objs.push(o);
     if (objs.length>MAXN) objs.shift();
   }
+  let fx=map(mouseX, 0, width, -0.1, 0.1);
+  let fy=map(mouseY, 0, height, -0.1, 0.1);
+  let f=new p5.Vector(fx, fy);
   for (let i=0; i<objs.length; i++){
     push();
-    objs[i].move();
+    objs[i].applyForce(f);
+    objs[i].update();
     translate(objs[i].pos.x, objs[i].pos.y)
     rotate(frameCount*0.1);
     translate(-objs[i].pos.x, -objs[i].pos.y)

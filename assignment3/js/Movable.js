@@ -2,20 +2,16 @@
 
 class Movable extends Thing{
 
-	constructor(pos, vel, acc){
+	constructor(pos, vel){
 		super(pos);
 		this.vel = vel;
-		if (typeof acc=='undefined'){
-			this.acc = p5.Vector(0, 0);
-		}
-		else {
-			this.acc = acc;
-		}
+		this.acc = new p5.Vector(0, 0);
 	}
 
-	move(){
+	update(){
 		this.vel.add(this.acc);
 		this.pos.add(this.vel);
+		this.acc.mult(0);
 	}
 
 	checkBoundary(){
@@ -25,6 +21,10 @@ class Movable extends Thing{
 
 	modifySpd(alpha){
 		this.vel.mult(alpha);
+	}
+
+	applyForce(f){
+		this.acc.add(f);
 	}
 
 }
