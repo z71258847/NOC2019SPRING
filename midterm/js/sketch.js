@@ -8,16 +8,7 @@ let params = {
   attractionMagnitude: 2,
   collision_coefficient: 10,
   velLimit: 10,
-  colorRed: 255,
-  colorGreen: 255,
-  colorBlue: 255,
-  explode: function() {
-      for (let i = 0; i < polygons.length; i++) {
-        let p = polygons[i];
-        let randomForce = createVector(random(-200, 200), random(-200, 200));
-        p.applyForce(randomForce);
-      }
-    }
+  color: "#ffffff"
 };
 
 let gui = new dat.GUI();
@@ -25,10 +16,7 @@ gui.add(params, "debugMode");
 gui.add(params, "attractionMagnitude", 0.5, 5.0);
 gui.add(params, "collision_coefficient", 5, 30);
 gui.add(params, "velLimit", 1, 20);
-gui.add(params, "colorRed", 0, 255);
-gui.add(params, "colorGreen", 0, 255);
-gui.add(params, "colorBlue", 0, 255);
-gui.add(params, "explode");
+gui.addColor(params, "color");
 
 function setup() {
   createCanvas(windowWidth-10, windowHeight-10);
@@ -38,7 +26,7 @@ function setup() {
 
 function draw() {
   background(0);
-  show_cur_color();
+  //show_cur_color();
 
   for (let i=0; i<polygons.length; i++){
     for (let j=0; j<polygons.length; j++){
@@ -55,7 +43,7 @@ function draw() {
   for (let i=0; i<record_node.length; i++){
     push();
     noStroke();
-    fill(255);
+    fill(color(params.color));
     circle(record_node[i].x, record_node[i].y, 2);
     pop();
   }
@@ -63,7 +51,7 @@ function draw() {
 }
 
 function show_cur_color(){
-  let temp_c=color(params.colorRed, params.colorGreen, params.colorBlue, 100);
+  let temp_c=color(params.color);
   push();
   fill(temp_c);
   noStroke();
@@ -76,14 +64,14 @@ function keyPressed() {
   if (keyCode == 69) {
     if (record_node.length>2){
       record_node=convex_hull(record_node);
-      let temp_c=color(params.colorRed, params.colorGreen, params.colorBlue, 100);
+      let temp_c=color(params.color);
       polygons.push(new Polygon(record_node, temp_c));
       record_node=[];
     }
   }
   if (keyCode == 65) {
-      let cur_pos=createVector(mouseX, mouseY);
-      record_node.push(cur_pos);
+    let cur_pos=createVector(mouseX, mouseY);
+    record_node.push(cur_pos);
   }
 }
 

@@ -9,28 +9,45 @@ class Polygon{
     this.acc = createVector(0, 0);
     this.mass = compute_size(this.relative_corner);
     this.color = color;
+    this.collision = false;
   }
 
   display(){
     push();
     translate(this.pos.x, this.pos.y);
-    for (let i=0; i<this.relative_corner.length; i++){
-      push();
-      strokeWeight(1);
-      stroke(this.color);
-      fill(this.color);
-      triangle(0, 0,
-        this.relative_corner[i].x, this.relative_corner[i].y,
-        this.relative_corner[(i+1)%this.relative_corner.length].x, this.relative_corner[(i+1)%this.relative_corner.length].y);
-      pop();
-    }
     if (params.debugMode){
+      for (let i=0; i<this.relative_corner.length; i++){
+        push();
+        strokeWeight(0.5);
+        if (this.collision) {
+          strokeWeight(2);
+          stroke(255,0,0);
+        }
+        fill(this.color);
+        triangle(0, 0,
+          this.relative_corner[i].x, this.relative_corner[i].y,
+          this.relative_corner[(i+1)%this.relative_corner.length].x, this.relative_corner[(i+1)%this.relative_corner.length].y);
+        pop();
+      }
       push();
       fill(255, 0, 0);//mass
       text(int(this.mass), 0, 0);
       pop();
     }
+    else {
+      for (let i=0; i<this.relative_corner.length; i++){
+        push();
+        strokeWeight(1);
+        stroke(this.color);
+        fill(this.color);
+        triangle(0, 0,
+          this.relative_corner[i].x, this.relative_corner[i].y,
+          this.relative_corner[(i+1)%this.relative_corner.length].x, this.relative_corner[(i+1)%this.relative_corner.length].y);
+        pop();
+      }
+    }
     pop();
+    this.collision=false;
   }
 
   update(){
@@ -128,6 +145,8 @@ class Polygon{
       }
     }
     if (flag){//if collision
+      this.collision = true;
+      other.collision = true;
       let v=p5.Vector.sub(other.pos, this.pos)
       let d=v.mag();
       let magnitude;
