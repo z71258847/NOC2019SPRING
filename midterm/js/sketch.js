@@ -73,6 +73,9 @@ function keyPressed() {
     let cur_pos=createVector(mouseX, mouseY);
     record_node.push(cur_pos);
   }
+  if (keyCode == 65+18) {
+    record_node.pop();
+  }
 }
 
 function cross(o, a, b){//vector oa, ob
